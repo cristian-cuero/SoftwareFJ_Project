@@ -1,0 +1,4 @@
+core/        → Clientes, reservas y entidades base  
+servicios/   → Salas, equipos y asesorías  
+utils/       → Logs y excepciones  
+logs/        → Archivos .log  
