@@ -1,0 +1,10 @@
+Operación 1: Cliente registrado correctamente.
+Operación 2: Error en cliente - Nombre inválido
+Operación 3: Cliente registrado correctamente.
+Operación 4: Error en cliente - Documento inválido
+Reserva 1: Confirmada correctamente.
+Reserva 2: Error - Duración inválida
+Reserva 3: Confirmada correctamente.
+Reserva 4: Error - Duración inválida
+Reserva 5: Confirmada correctamente.
+Reserva 6: Confirmada correctamente.
