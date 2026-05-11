@@ -1,3 +1,4 @@
+
 Operación 1: Cliente registrado correctamente.
 Operación 2: Error en cliente - Nombre inválido
 Operación 3: Cliente registrado correctamente.
@@ -8,3 +9,17 @@ Reserva 3: Confirmada correctamente.
 Reserva 4: Error - Duración inválida
 Reserva 5: Confirmada correctamente.
 Reserva 6: Confirmada correctamente.
+Operación 1: Cliente registrado correctamente.
+Operación 2: Error en cliente - Nombre inválido
+Operación 3: Cliente registrado correctamente.
+Operación 4: Error en cliente - Documento inválido
+Operación 5: Cliente registrado correctamente.
+2026-05-10 21:54:58,840 - INFO - Calculo exitoso para Sala: Sala Premium | Total: 400 | Capacidad: 25
+Reserva 1: Confirmada correctamente.
+2026-05-10 21:54:58,841 - INFO - Calculo exitoso para Sala: Sala Basica | Total: 100 | Capacidad: 10
+Reserva 2: Confirmada correctamente.
+Reserva 3: Error - Duración inválida
+Reserva 4: Confirmada correctamente.
+Reserva 5: Error - Duración inválida
+Reserva 6: Confirmada correctamente.
+Reserva 7: Confirmada correctamente.

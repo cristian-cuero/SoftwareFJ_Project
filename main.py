@@ -14,6 +14,7 @@ def ejecutar_sistema():
         lambda: Cliente("", "456", "correo_invalido"),
         lambda: Cliente("Carlos", "789", "carlos@gmail.com"),
         lambda: Cliente("Ana", "", "ana@gmail.com"),
+        lambda: Cliente("Juan", "123", "Juan@gmail.com"),
     ]
 
     for i, operacion in enumerate(operaciones, start=1):
@@ -27,13 +28,15 @@ def ejecutar_sistema():
             registrar_log(f"Operación {i}: Error en cliente - {e}")
 
     servicios = [
-        ReservaSala("Sala Premium", 100),
+        ReservaSala("Sala Premium", 100, 25),
         AlquilerEquipo("Proyector", 50),
-        AsesoriaEspecializada("Consultoría", 200)
+        AsesoriaEspecializada("Consultoría", 200),
+        ReservaSala("Sala Basica", 50, 10)
     ]
 
     operaciones_reservas = [
         (clientes[0], servicios[0], 3),
+        (clientes[0], servicios[3], 2),
         (clientes[1] if len(clientes) > 1 else clientes[0], servicios[1], -2),
         (clientes[0], servicios[2], 2),
         (clientes[0], servicios[0], 0),
@@ -45,7 +48,15 @@ def ejecutar_sistema():
         try:
             reserva = Reserva(cliente, servicio, duracion)
             reserva.confirmar()
-            costo = reserva.procesar_pago()
+           
+           # Verificamos si el servicio es tu clase para aplicar la sobrecarga (VIP)
+            if isinstance(servicio, ReservaSala):
+                # Aplicamos descuento VIP si el cliente es Juan (por ejemplo)
+                soy_vip = "Juan" in cliente.obtener_detalles()
+                costo = servicio.calcular_costo(duracion, es_vip=soy_vip)               
+            else:
+
+                costo = reserva.procesar_pago()
 
             print(f"Reserva confirmada para {cliente.obtener_detalles()}")
             print(f"Servicio: {servicio.nombre} | Costo: {costo}")
