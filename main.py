@@ -1,83 +1,94 @@
 from core.cliente import Cliente
-from core.servicio import ReservaSala, AlquilerEquipo, AsesoriaEspecializada
 from core.reserva import Reserva
-from core.logger import registrar_log
-from core.excepciones import ClienteError, ReservaError
+from core.salas import ReservaSala
+from core.equipos import AlquilerEquipo
+from core.asesoarias import AsesoriaEspecializada
+from utils.logger import registrar_log
+from utils.excepciones import *
 
 
-def ejecutar_sistema():
-    clientes = []
-    reservas = []
+def ejecutar():
 
-    operaciones = [
-        lambda: Cliente("Jessica", "123", "jessica@gmail.com"),
-        lambda: Cliente("", "456", "correo_invalido"),
-        lambda: Cliente("Carlos", "789", "carlos@gmail.com"),
-        lambda: Cliente("Ana", "", "ana@gmail.com"),
-        lambda: Cliente("Juan", "123", "Juan@gmail.com"),
-    ]
+    clientes_creados = []
 
-    for i, operacion in enumerate(operaciones, start=1):
+    try:
+        # 🔷 LISTA DE CLIENTES (CON LAMBDAS)
+        clientes = [
+            lambda: Cliente(1, "Jessica", "123", "jessica@gmail.com"),
+            lambda: Cliente(2, "", "456", "correo_invalido"),
+            lambda: Cliente(3, "Carlos", "789", "carlos@gmail.com"),
+            lambda: Cliente(4, "Ana", "", "ana@gmail.com"),
+            lambda: Cliente(5, "Juan", "123", "juan@gmail.com"),
+        ]
+
+        # 🔷 CREACIÓN DE CLIENTES
+        for i, crear_cliente in enumerate(clientes, start=1):
+            try:
+                cliente = crear_cliente()
+                clientes_creados.append(cliente)
+                registrar_log(f"Cliente {i} creado: {cliente.mostrar_info()}")
+            except ClienteError as e:
+                registrar_log(f"ERROR cliente {i}: {e}")
+
+        # 🔷 CREACIÓN DE SERVICIOS
         try:
-            cliente = operacion()
-            clientes.append(cliente)
-            print(f"Cliente registrado correctamente: {cliente.obtener_detalles()}")
-            registrar_log(f"Operación {i}: Cliente registrado correctamente.")
-        except ClienteError as e:
-            print(f"Error en cliente: {e}")
-            registrar_log(f"Operación {i}: Error en cliente - {e}")
+            sala = ReservaSala("Sala VIP", 100)
+            equipo = AlquilerEquipo("Laptop", 50, "Tecnología")
+            asesoria = AsesoriaEspecializada("Consultoría", 200)
 
-    servicios = [
-        ReservaSala("Sala Premium", 100, 25),
-        AlquilerEquipo("Proyector", 50),
-        AsesoriaEspecializada("Consultoría", 200),
-        ReservaSala("Sala Basica", 50, 10)
-    ]
+            registrar_log("Servicios creados correctamente")
 
-    operaciones_reservas = [
-        (clientes[0], servicios[0], 3),
-        (clientes[0], servicios[3], 2),
-        (clientes[1] if len(clientes) > 1 else clientes[0], servicios[1], -2),
-        (clientes[0], servicios[2], 2),
-        (clientes[0], servicios[0], 0),
-        (clientes[0], servicios[1], 5),
-        (clientes[0], servicios[2], 1),
-    ]
-
-    for j, (cliente, servicio, duracion) in enumerate(operaciones_reservas, start=1):
-        try:
-            reserva = Reserva(cliente, servicio, duracion)
-            reserva.confirmar()
-           
-           # Verificamos si el servicio es tu clase para aplicar la sobrecarga (VIP)
-            if isinstance(servicio, ReservaSala):
-                # Aplicamos descuento VIP si el cliente es Juan (por ejemplo)
-                soy_vip = "Juan" in cliente.obtener_detalles()
-                costo = servicio.calcular_costo(duracion, es_vip=soy_vip)               
-            else:
-
-                costo = reserva.procesar_pago()
-
-            print(f"Reserva confirmada para {cliente.obtener_detalles()}")
-            print(f"Servicio: {servicio.nombre} | Costo: {costo}")
-            reservas.append(reserva)
-
-            registrar_log(f"Reserva {j}: Confirmada correctamente.")
-        except ReservaError as e:
-            print(f"Error en reserva: {e}")
-            registrar_log(f"Reserva {j}: Error - {e}")
         except Exception as e:
-            print(f"Error inesperado: {e}")
-            registrar_log(f"Reserva {j}: Error inesperado - {e}")
-        finally:
-            print("Operación procesada.\n")
+            registrar_log(f"ERROR creando servicios: {e}")
 
-    print("Sistema ejecutado correctamente sin detenerse.")
+        # 🔷 RESERVA VÁLIDA
+        try:
+            r1 = Reserva(clientes_creados[0], sala, 3)
+            r1.confirmar()
+            registrar_log("Reserva confirmada correctamente")
+
+            total = r1.procesar_pago()
+            registrar_log(f"Pago realizado: {total}")
+
+        except Exception as e:
+            registrar_log(f"ERROR en reserva válida: {e}")
+
+        # 🔷 RESERVA INVÁLIDA (duración negativa)
+        try:
+            r2 = Reserva(clientes_creados[0], sala, -2)
+        except ReservaError as e:
+            registrar_log(f"ERROR reserva inválida: {e}")
+
+        # 🔷 ERROR EN SERVICIO
+        try:
+            sala.calcular_costo(0)
+        except Exception as e:
+            registrar_log(f"ERROR cálculo servicio: {e}")
+
+        # 🔷 USO DE OTROS SERVICIOS
+        try:
+            total_equipo = equipo.calcular_costo(2, seguro=20)
+            registrar_log(f"Pago equipo: {total_equipo}")
+
+            total_asesoria = asesoria.calcular_costo(2, impuesto=50)
+            registrar_log(f"Pago asesoría: {total_asesoria}")
+
+        except Exception as e:
+            registrar_log(f"ERROR en otros servicios: {e}")
+
+        # 🔷 CANCELACIÓN
+        try:
+            r1.cancelar()
+            registrar_log("Reserva cancelada correctamente")
+        except Exception as e:
+            registrar_log(f"ERROR al cancelar: {e}")
+
+    except Exception as e:
+        registrar_log(f"ERROR crítico del sistema: {e}")
+
+    finally:
+        print("Sistema ejecutado sin detenerse ✔")
 
 
 if __name__ == "__main__":
-    try:
-        ejecutar_sistema()
-    except Exception as e:
-        registrar_log(f"Error crítico del sistema: {e}")
-        print("Se produjo un error crítico, pero fue registrado.")
+    ejecutar()

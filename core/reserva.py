@@ -1,6 +1,8 @@
-from core.excepciones import ReservaError
+from utils.excepciones import ReservaError
+
 
 class Reserva:
+
     def __init__(self, cliente, servicio, duracion):
         if duracion <= 0:
             raise ReservaError("Duración inválida")

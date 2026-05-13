@@ -1,12 +1,18 @@
-from core.base import EntidadBase
-from core.excepciones import ClienteError
+from core.entidad import EntidadBase
+from utils.excepciones import ClienteError
+
 
 class Cliente(EntidadBase):
-    def __init__(self, nombre, documento, correo):
+
+    def __init__(self, id, nombre, documento, correo):
+        super().__init__(id)
+
         if not nombre:
             raise ClienteError("Nombre inválido")
+
         if not documento:
             raise ClienteError("Documento inválido")
+
         if "@" not in correo:
             raise ClienteError("Correo inválido")
 
@@ -14,5 +20,9 @@ class Cliente(EntidadBase):
         self.__documento = documento
         self.__correo = correo
 
-    def obtener_detalles(self):
-        return f"Cliente: {self.__nombre}, Documento: {self.__documento}, Correo: {self.__correo}"
+    @property
+    def nombre(self):
+        return self.__nombre
+
+    def mostrar_info(self):
+        return f"Cliente: {self.__nombre}"
