@@ -1,0 +1,13 @@
+[2026-05-12 22:15:22] Cliente 1 creado: Cliente: Jessica
+[2026-05-12 22:15:22] ERROR cliente 2: Nombre inválido
+[2026-05-12 22:15:22] Cliente 3 creado: Cliente: Carlos
+[2026-05-12 22:15:22] ERROR cliente 4: Documento inválido
+[2026-05-12 22:15:22] Cliente 5 creado: Cliente: Juan
+[2026-05-12 22:15:22] Servicios creados correctamente
+[2026-05-12 22:15:22] Reserva confirmada correctamente
+[2026-05-12 22:15:22] Pago realizado: 300
+[2026-05-12 22:15:22] ERROR reserva inválida: Duración inválida
+[2026-05-12 22:15:22] ERROR cálculo servicio: Horas inválidas
+[2026-05-12 22:15:22] Pago equipo: 120
+[2026-05-12 22:15:22] Pago asesoría: 450
+[2026-05-12 22:15:22] Reserva cancelada correctamente

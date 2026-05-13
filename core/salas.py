@@ -1,4 +1,4 @@
-from base_servicio import Servicio
+from core.base_servicio import Servicio
 from utils.excepciones import ServicioError
 
 
